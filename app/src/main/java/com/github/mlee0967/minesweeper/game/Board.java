@@ -4,8 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.GridView;
 
-public class BoardView extends GridView {
-    public BoardView(Context context, AttributeSet attrs){
+public class Board extends GridView {
+    public Board(Context context, AttributeSet attrs){
         super(context, attrs);
     }
 

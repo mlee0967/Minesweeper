@@ -31,9 +31,9 @@
             android:layout_height="50dp" />
     </TableRow>
 
-    <com.github.mlee0967.minesweeper.game.BoardView
+    <com.github.mlee0967.minesweeper.game.Board
         android:id="@+id/board"
         android:layout_height="550dp"
         android:gravity="bottom" >
-    </com.github.mlee0967.minesweeper.game.BoardView>
+    </com.github.mlee0967.minesweeper.game.Board>
 </TableLayout>

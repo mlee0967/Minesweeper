@@ -14,7 +14,7 @@ public class Cell extends View implements View.OnClickListener , View.OnLongClic
         super(context);
         flagged = false;
         revealed = false;
-        bomb = false;
+        mine = false;
         clicked = false;
         val = 0;
         this.row = row;
@@ -31,7 +31,6 @@ public class Cell extends View implements View.OnClickListener , View.OnLongClic
 
     @Override
     public void onClick(View v) {
-        System.out.println("hi");
         Game.getInstance().click(row, col);
     }
 
@@ -45,17 +44,17 @@ public class Cell extends View implements View.OnClickListener , View.OnLongClic
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if(flagged){
-            if(Game.getInstance().isGameOver() && !bomb)
+            if(Game.getInstance().isGameOver() && !mine)
                 drawBombCrossed(canvas);
             else
                 drawFlag(canvas);
         }else if(clicked){
-            if(bomb)
+            if(mine)
                 drawBombExploded(canvas);
             else
                 drawNumber(canvas);
         }else if(revealed){
-            if(bomb)
+            if(mine)
                 drawBomb(canvas);
             else
                 drawNumber(canvas);
@@ -125,12 +124,12 @@ public class Cell extends View implements View.OnClickListener , View.OnLongClic
         invalidate();
     }
 
-    public boolean hasBomb(){
-        return bomb;
+    public boolean isMine(){
+        return mine;
     }
 
-    public void setBomb(){
-        this.bomb = true;
+    public void setMine(){
+        this.mine = true;
     }
 
     public void setFlagged(boolean flagged){
@@ -148,7 +147,7 @@ public class Cell extends View implements View.OnClickListener , View.OnLongClic
     private int row;
     private int col;
     private int val; //number of bombs adjacent to this cell
-    private boolean bomb;
+    private boolean mine;
     private boolean flagged;
     private boolean revealed;
     private boolean clicked;

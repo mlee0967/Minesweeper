@@ -3,11 +3,10 @@ package com.github.mlee0967.minesweeper;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.widget.GridView;
 import android.widget.TextView;
 
 import com.github.mlee0967.minesweeper.game.BoardAdapter;
-import com.github.mlee0967.minesweeper.game.BoardView;
+import com.github.mlee0967.minesweeper.game.Board;
 import com.github.mlee0967.minesweeper.game.Game;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,13 +21,13 @@ public class MainActivity extends AppCompatActivity {
         Timer timer = new Timer(timerView);
         timer.start();
 
-        Game.getInstance().start(this);
-        boardView = (BoardView) findViewById(R.id.board);
-        boardView.setNumColumns(Game.getInstance().getWidth());
-        boardView.setAdapter(new BoardAdapter());
+        Game.getInstance().start(this, minesLeftView, timer);
+        board = (Board) findViewById(R.id.board);
+        board.setNumColumns(Game.getInstance().getWidth());
+        board.setAdapter(new BoardAdapter());
     }
 
-    private TextView minesLeftView;
-    private TextView timerView;
-    private BoardView boardView;
+    public TextView minesLeftView;
+    public TextView timerView;
+    private Board board;
 }

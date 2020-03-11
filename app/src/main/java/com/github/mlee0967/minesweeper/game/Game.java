@@ -1,7 +1,10 @@
 package com.github.mlee0967.minesweeper.game;
 
 import android.content.Context;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.github.mlee0967.minesweeper.Timer;
 
 import java.util.Random;
 
@@ -17,12 +20,14 @@ public class Game {
 
     private Game(){}
 
-    public void start(Context context){
+    public void start(Context context, TextView minesLeftView, Timer timer){
         this.context = context;
-        setDifficulty(Difficulty.INTERMEDIATE);
+        this.minesLeftView = minesLeftView;
+        this.timer = timer;
+        setDifficulty(Difficulty.BEGINNER);
         initBoardSettings(difficulty);
         initBoard();
-        placeBombs(0,0);
+        placeMines(0,0);
     }
 
     public void setDifficulty(Difficulty difficulty){
@@ -45,19 +50,19 @@ public class Game {
             case BEGINNER:
                 width = 9;
                 height = 9;
-                bombs = 9;
+                mines = 9;
                 break;
             case INTERMEDIATE:
                 width = 16;
                 height = 16;
-                bombs = 40;
+                mines = 40;
                 break;
             case EXPERT:
                 width = 16;
                 height = 30;
-                bombs = 99;
+                mines = 99;
         }
-        bombsLeft = bombs;
+        setMinesLeft(mines);
         cellsLeft = width*height;
     }
 
@@ -65,7 +70,7 @@ public class Game {
         if(!board[row][col].isClicked()){
             board[row][col].setClicked(true);
             board[row][col].setRevealed();
-            if(board[row][col].hasBomb()){
+            if(board[row][col].isMine()){
                 endGame(false);
             }else{
                 reveal(row, col);
@@ -79,11 +84,12 @@ public class Game {
     public void flag(int row, int col){
         if(board[row][col].isFlagged()){
             board[row][col].setFlagged(false);
-            ++bombsLeft;
+            setMinesLeft(minesLeft+1);
             ++cellsLeft;
+
         }else{
             board[row][col].setFlagged(true);
-            --bombsLeft;
+            setMinesLeft(minesLeft-1);
             --cellsLeft;
         }
     }
@@ -97,7 +103,7 @@ public class Game {
                 int adj_row = row + dir[0];
                 int adj_col = col + dir[1];
                 if (adj_row >= 0 && adj_row < height && adj_col >= 0 && adj_col < width &&
-                        !board[adj_row][adj_col].isRevealed() && !board[adj_row][adj_col].hasBomb()) {
+                        !board[adj_row][adj_col].isRevealed() && !board[adj_row][adj_col].isMine()) {
                     reveal(adj_row, adj_col);
                 }
             }
@@ -106,51 +112,6 @@ public class Game {
 
     public boolean isGameOver(){
         return gameOver;
-    }
-
-    private boolean checkWin(){
-        for(int r=0; r<height; ++r){
-            for(int c=0; c<width; ++c){
-                if(!board[r][c].hasBomb() && board[r][c].isFlagged())
-                    return false;
-            }
-        }
-        return true;
-    }
-
-    private void endGame(boolean won){
-        gameOver = true;
-
-        if(won)
-            Toast.makeText(context,"Game Won", Toast.LENGTH_SHORT).show();
-        else
-            Toast.makeText(context,"Game lost", Toast.LENGTH_SHORT).show();
-
-        for(int r=0; r<height; ++r){
-            for(int c=0; c<width; ++c){
-                board[r][c].setRevealed();
-            }
-        }
-    }
-
-    private void placeBombs(int clicked_row, int clicked_col){
-        Random rand = new Random();
-        int unplaced_bombs = bombs;
-        while(unplaced_bombs>0){
-            int row = (rand.nextInt() & Integer.MAX_VALUE)%height;
-            int col = (rand.nextInt() & Integer.MAX_VALUE)%width;
-            if((row!=clicked_row || col!=clicked_col) && !board[row][col].hasBomb()){
-                board[row][col].setBomb();
-                --unplaced_bombs;
-                for(int[] dir: dirs){
-                    int adj_row = row+dir[0];
-                    int adj_col = col+dir[1];
-                    if(adj_row>=0 && adj_row<height && adj_col>=0 && adj_col<width){
-                        board[adj_row][adj_col].incVal();
-                    }
-                }
-            }
-        }
     }
 
     public Cell getCell(int position){
@@ -167,15 +128,68 @@ public class Game {
         return height;
     }
 
+    private void setMinesLeft(int num){
+        minesLeft = num;
+        minesLeftView.setText(String.valueOf(minesLeft));
+    }
+
+    private boolean checkWin(){
+        for(int r=0; r<height; ++r){
+            for(int c=0; c<width; ++c){
+                if(!board[r][c].isMine() && board[r][c].isFlagged())
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    private void endGame(boolean won){
+        timer.cancel();
+        gameOver = true;
+
+        if(won)
+            Toast.makeText(context,"Game Won", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(context,"Game lost", Toast.LENGTH_SHORT).show();
+
+        for(int r=0; r<height; ++r){
+            for(int c=0; c<width; ++c){
+                board[r][c].setRevealed();
+            }
+        }
+    }
+
+    private void placeMines(int clicked_row, int clicked_col){
+        Random rand = new Random();
+        int unplaced_bombs = mines;
+        while(unplaced_bombs>0){
+            int row = (rand.nextInt() & Integer.MAX_VALUE)%height;
+            int col = (rand.nextInt() & Integer.MAX_VALUE)%width;
+            if((row!=clicked_row || col!=clicked_col) && !board[row][col].isMine()){
+                board[row][col].setMine();
+                --unplaced_bombs;
+                for(int[] dir: dirs){
+                    int adj_row = row+dir[0];
+                    int adj_col = col+dir[1];
+                    if(adj_row>=0 && adj_row<height && adj_col>=0 && adj_col<width){
+                        board[adj_row][adj_col].incVal();
+                    }
+                }
+            }
+        }
+    }
+
     static private Game instance;
     private int width;
     private int height;
-    private int bombs;
-    private int bombsLeft;
+    private int mines;
+    private int minesLeft;
+    private TextView minesLeftView;
     private int cellsLeft;
     private Cell[][] board;
     private int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}, {1,1}, {-1,-1}, {1,-1}, {-1,1}};
     private boolean gameOver;
     private Difficulty difficulty;
     private Context context;
+    private Timer timer;
 }
