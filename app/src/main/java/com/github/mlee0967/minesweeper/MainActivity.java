@@ -41,8 +41,8 @@ public class MainActivity extends AppCompatActivity {
         boardView.setAdapter(new BoardAdapter());
     }
 
-    public TextView minesLeftView;
-    public TextView timerView;
-    public Button resetButton;
+    private TextView minesLeftView;
+    private TextView timerView;
+    private Button resetButton;
     private Board boardView;
 }

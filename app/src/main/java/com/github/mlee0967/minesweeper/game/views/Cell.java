@@ -25,9 +25,43 @@ public class Cell extends View implements View.OnClickListener , View.OnLongClic
         setOnLongClickListener(this);
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, widthMeasureSpec);
+    public int getVal() {
+        return val;
+    }
+
+    public void incVal() {
+        ++val;
+    }
+
+    public boolean isFlagged(){
+        return flagged;
+    }
+
+    public boolean isMine(){
+        return mine;
+    }
+
+    public boolean isRevealed() {
+        return revealed;
+    }
+
+    public void setClicked() {
+        this.clicked = true;
+        invalidate();
+    }
+
+    public void setFlagged(boolean flagged){
+        this.flagged = flagged;
+        invalidate();
+    }
+
+    public void setMine(){
+        this.mine = true;
+    }
+
+    public void setRevealed() {
+        this.revealed = true;
+        invalidate();
     }
 
     @Override
@@ -39,6 +73,11 @@ public class Cell extends View implements View.OnClickListener , View.OnLongClic
     public boolean onLongClick(View v) {
         Game.getInstance().flag(row, col);
         return true;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, widthMeasureSpec);
     }
 
     @Override
@@ -97,45 +136,6 @@ public class Cell extends View implements View.OnClickListener , View.OnLongClic
         Drawable drawable = ContextCompat.getDrawable(getContext(), drawables[val]);
         drawable.setBounds(0,0,getWidth(),getHeight());
         drawable.draw(canvas);
-    }
-
-    public int getVal() {
-        return val;
-    }
-
-    public void incVal() {
-        ++val;
-    }
-
-    public boolean isFlagged(){
-        return flagged;
-    }
-
-    public boolean isMine(){
-        return mine;
-    }
-
-    public boolean isRevealed() {
-        return revealed;
-    }
-
-    public void setClicked() {
-        this.clicked = true;
-        invalidate();
-    }
-
-    public void setFlagged(boolean flagged){
-        this.flagged = flagged;
-        invalidate();
-    }
-
-    public void setMine(){
-        this.mine = true;
-    }
-
-    public void setRevealed() {
-        this.revealed = true;
-        invalidate();
     }
 
     private int[] drawables = { R.drawable.num_0, R.drawable.num_1, R.drawable.num_2, R.drawable.num_3,

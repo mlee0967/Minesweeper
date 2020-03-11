@@ -99,21 +99,6 @@ public class Game {
         }
     }
 
-    public void reveal(int row, int col){
-        --cellsLeft;
-        if(board[row][col].getVal()==0) {
-            for(int[] dir: dirs){
-                int adj_row = row + dir[0];
-                int adj_col = col + dir[1];
-                if (adj_row>=0 && adj_row<height && adj_col>=0 && adj_col<width &&
-                        !board[adj_row][adj_col].isRevealed() && !board[adj_row][adj_col].isMine()) {
-                    board[adj_row][adj_col].setRevealed();
-                    reveal(adj_row, adj_col);
-                }
-            }
-        }
-    }
-
     public Cell getCell(int position){
         int row = position / height;
         int col = position % height;
@@ -158,6 +143,22 @@ public class Game {
         }
     }
 
+    private void reveal(int row, int col){
+        --cellsLeft;
+        if(board[row][col].getVal()==0) {
+            for(int[] dir: dirs){
+                int adj_row = row + dir[0];
+                int adj_col = col + dir[1];
+                if (adj_row>=0 && adj_row<height && adj_col>=0 && adj_col<width &&
+                        !board[adj_row][adj_col].isRevealed() && !board[adj_row][adj_col].isMine()) {
+                    board[adj_row][adj_col].setRevealed();
+                    reveal(adj_row, adj_col);
+                }
+            }
+        }
+    }
+
+    //first clicked cell should never be mine
     private void setMines(int clicked_row, int clicked_col){
         Random rand = new Random();
         int unplaced_bombs = mines;
