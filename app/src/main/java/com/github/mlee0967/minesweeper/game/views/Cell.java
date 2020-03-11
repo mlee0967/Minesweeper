@@ -1,4 +1,4 @@
-package com.github.mlee0967.minesweeper.game;
+package com.github.mlee0967.minesweeper.game.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -8,6 +8,7 @@ import android.view.View;
 import androidx.core.content.ContextCompat;
 
 import com.github.mlee0967.minesweeper.R;
+import com.github.mlee0967.minesweeper.game.Game;
 
 public class Cell extends View implements View.OnClickListener , View.OnLongClickListener {
     public Cell(Context context, int row, int col) {

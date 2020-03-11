@@ -1,8 +1,10 @@
-package com.github.mlee0967.minesweeper.game;
+package com.github.mlee0967.minesweeper.game.views;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
+import com.github.mlee0967.minesweeper.game.Game;
 
 public class BoardAdapter extends BaseAdapter {
 

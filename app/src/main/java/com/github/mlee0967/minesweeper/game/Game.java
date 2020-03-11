@@ -4,11 +4,12 @@ import android.content.Context;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.mlee0967.minesweeper.Timer;
+import com.github.mlee0967.minesweeper.utils.Timer;
+import com.github.mlee0967.minesweeper.game.views.Cell;
 
 import java.util.Random;
 
-enum Difficulty{ BEGINNER, INTERMEDIATE, EXPERT };
+
 
 public class Game {
     static public Game getInstance(){
@@ -19,19 +20,6 @@ public class Game {
     }
 
     private Game(){}
-
-    public void start(Context context, TextView minesLeftView, Timer timer){
-        this.context = context;
-        this.minesLeftView = minesLeftView;
-        this.timer = timer;
-        setDifficulty(Difficulty.BEGINNER);
-        initBoardSettings(difficulty);
-        initBoard();
-    }
-
-    public void setDifficulty(Difficulty difficulty){
-        this.difficulty = difficulty;
-    }
 
     void initBoard(){
         board = new Cell[height][width];
@@ -61,27 +49,45 @@ public class Game {
                 height = 30;
                 mines = 99;
         }
+    }
+
+    public void initGame(Context context, TextView minesLeftView, Timer timer){
+        this.context = context;
+        this.minesLeftView = minesLeftView;
+        this.timer = timer;
+    }
+
+    public void startGame(Difficulty difficulty){
+        setDifficulty(difficulty);
+        initBoardSettings(difficulty);
+        initBoard();
         setMinesLeft(mines);
         cellsLeft = width*height;
+        this.gameOver = false;
+    }
+
+    public void setDifficulty(Difficulty difficulty){
+        this.difficulty = difficulty;
     }
 
     public void click(int row, int col){
+        if(board[row][col].isRevealed())
+            return;
+
         //if first click
         if(cellsLeft==width*height){
             placeMines(row, col);
         }
 
-        if(!board[row][col].isClicked()){
-            board[row][col].setClicked(true);
-            board[row][col].setRevealed();
-            if(board[row][col].isMine()){
-                endGame(false);
-            }else{
-                reveal(row, col);
-            }
+        board[row][col].setClicked(true);
+        board[row][col].setRevealed();
+        if(board[row][col].isMine()){
+            endGame(false);
+        }else{
+            reveal(row, col);
         }
 
-        if(cellsLeft==0)
+        if(cellsLeft==0 && minesLeft==0)
             endGame(checkWin());
     }
 
@@ -95,19 +101,20 @@ public class Game {
             board[row][col].setFlagged(true);
             setMinesLeft(minesLeft-1);
             --cellsLeft;
+            if(cellsLeft==0)
+                endGame(checkWin());
         }
     }
 
     public void reveal(int row, int col){
-        board[row][col].setRevealed();
-        board[row][col].invalidate();
         --cellsLeft;
         if(board[row][col].getVal()==0) {
             for(int[] dir: dirs){
                 int adj_row = row + dir[0];
                 int adj_col = col + dir[1];
-                if (adj_row >= 0 && adj_row < height && adj_col >= 0 && adj_col < width &&
+                if (adj_row>=0 && adj_row<height && adj_col>=0 && adj_col<width &&
                         !board[adj_row][adj_col].isRevealed() && !board[adj_row][adj_col].isMine()) {
+                    board[adj_row][adj_col].setRevealed();
                     reveal(adj_row, adj_col);
                 }
             }

@@ -1,4 +1,4 @@
-package com.github.mlee0967.minesweeper.game;
+package com.github.mlee0967.minesweeper.game.views;
 
 import android.content.Context;
 import android.util.AttributeSet;

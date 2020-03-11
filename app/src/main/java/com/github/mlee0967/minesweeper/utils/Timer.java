@@ -1,4 +1,4 @@
-package com.github.mlee0967.minesweeper;
+package com.github.mlee0967.minesweeper.utils;
 
 
 import android.os.CountDownTimer;
@@ -9,7 +9,7 @@ public class Timer extends CountDownTimer {
     private final long duration;
     private TextView timerView;
 
-    protected Timer(TextView timerView) {
+    public Timer(TextView timerView) {
         super(Long.MAX_VALUE, INTERVAL_MS);
         this.duration = Long.MAX_VALUE;
         this.timerView = timerView;
