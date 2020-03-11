@@ -85,17 +85,17 @@ public class Cell extends View implements View.OnClickListener , View.OnLongClic
         super.onDraw(canvas);
         if(flagged){
             if(Game.getInstance().isGameOver() && !mine)
-                drawBombCrossed(canvas);
+                drawMineCrossed(canvas);
             else
                 drawFlag(canvas);
         }else if(clicked){
             if(mine)
-                drawBombExploded(canvas);
+                drawMineExploded(canvas);
             else
                 drawNumber(canvas);
         }else if(revealed){
             if(mine)
-                drawBomb(canvas);
+                drawMine(canvas);
             else
                 drawNumber(canvas);
         }else
@@ -114,20 +114,20 @@ public class Cell extends View implements View.OnClickListener , View.OnLongClic
         drawable.draw(canvas);
     }
 
-    private void drawBomb(Canvas canvas){
-        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.bomb);
+    private void drawMine(Canvas canvas){
+        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.mine);
         drawable.setBounds(0,0,getWidth(),getHeight());
         drawable.draw(canvas);
     }
 
-    private void drawBombCrossed(Canvas canvas){
-        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.bomb_crossed);
+    private void drawMineCrossed(Canvas canvas){
+        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.mine_crossed);
         drawable.setBounds(0,0,getWidth(),getHeight());
         drawable.draw(canvas);
     }
 
-    private void drawBombExploded(Canvas canvas){
-        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.bomb_exploded);
+    private void drawMineExploded(Canvas canvas){
+        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.mine_exploded);
         drawable.setBounds(0,0,getWidth(),getHeight());
         drawable.draw(canvas);
     }
