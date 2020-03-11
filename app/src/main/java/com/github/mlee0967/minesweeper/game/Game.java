@@ -27,7 +27,6 @@ public class Game {
         setDifficulty(Difficulty.BEGINNER);
         initBoardSettings(difficulty);
         initBoard();
-        placeMines(0,0);
     }
 
     public void setDifficulty(Difficulty difficulty){
@@ -67,6 +66,11 @@ public class Game {
     }
 
     public void click(int row, int col){
+        //if first click
+        if(cellsLeft==width*height){
+            placeMines(row, col);
+        }
+
         if(!board[row][col].isClicked()){
             board[row][col].setClicked(true);
             board[row][col].setRevealed();
@@ -87,7 +91,7 @@ public class Game {
             setMinesLeft(minesLeft+1);
             ++cellsLeft;
 
-        }else{
+        }else if(!board[row][col].isRevealed()){
             board[row][col].setFlagged(true);
             setMinesLeft(minesLeft-1);
             --cellsLeft;

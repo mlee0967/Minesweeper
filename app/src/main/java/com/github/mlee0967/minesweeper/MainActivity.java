@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         timer.start();
 
         Game.getInstance().start(this, minesLeftView, timer);
+
         board = (Board) findViewById(R.id.board);
         board.setNumColumns(Game.getInstance().getWidth());
         board.setAdapter(new BoardAdapter());
