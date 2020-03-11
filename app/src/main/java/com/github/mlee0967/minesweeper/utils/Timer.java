@@ -1,33 +1,29 @@
 package com.github.mlee0967.minesweeper.utils;
 
-
 import android.os.CountDownTimer;
 import android.widget.TextView;
 
 public class Timer extends CountDownTimer {
-    private static final long INTERVAL_MS = 1000;
-    private final long duration;
-    private TextView timerView;
-
     public Timer(TextView timerView) {
-        super(Long.MAX_VALUE, INTERVAL_MS);
-        this.duration = Long.MAX_VALUE;
+        super(MAX_TIME, INTERVAL_MS);
+        this.duration = MAX_TIME;
         this.timerView = timerView;
-    }
-
-    public void onTick(int second){
-        timerView.setText(String.valueOf(second));
     }
 
     @Override
     public void onTick(long msUntilFinished) {
         int second = (int) ((duration - msUntilFinished) / 1000);
-        onTick(second);
+        timerView.setText(String.format("%03d", second));
     }
 
     @Override
     public void onFinish() {
         onTick(duration / 1000);
     }
+
+    private static final long INTERVAL_MS = 1000;
+    private static final long MAX_TIME = 999000;
+    private final long duration;
+    private TextView timerView;
 }
 

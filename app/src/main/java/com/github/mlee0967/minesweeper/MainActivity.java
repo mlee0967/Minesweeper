@@ -27,16 +27,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         timerView = (TextView) findViewById(R.id.Timer);
-        Timer timer = new Timer(timerView);
-        timer.start();
         boardView = (Board) findViewById(R.id.board);
 
-        Game.getInstance().initGame(this, minesLeftView, timer);
+        Game.getInstance().initGame(this, minesLeftView);
         startGame();
     }
 
     private void startGame(){
-        Game.getInstance().startGame(Difficulty.BEGINNER);
+        Timer timer = new Timer(timerView);
+        timer.start();
+        Game.getInstance().startGame(Difficulty.BEGINNER, timer);
         boardView.setNumColumns(Game.getInstance().getWidth());
         boardView.setAdapter(new BoardAdapter());
     }

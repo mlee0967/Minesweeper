@@ -99,15 +99,6 @@ public class Cell extends View implements View.OnClickListener , View.OnLongClic
         drawable.draw(canvas);
     }
 
-    public boolean isRevealed() {
-        return revealed;
-    }
-
-    public void setRevealed() {
-        this.revealed = true;
-        invalidate();
-    }
-
     public int getVal() {
         return val;
     }
@@ -116,21 +107,21 @@ public class Cell extends View implements View.OnClickListener , View.OnLongClic
         ++val;
     }
 
-    public boolean isClicked() {
-        return clicked;
-    }
-
-    public void setClicked(boolean clicked) {
-        this.clicked = clicked;
-        invalidate();
+    public boolean isFlagged(){
+        return flagged;
     }
 
     public boolean isMine(){
         return mine;
     }
 
-    public void setMine(){
-        this.mine = true;
+    public boolean isRevealed() {
+        return revealed;
+    }
+
+    public void setClicked() {
+        this.clicked = true;
+        invalidate();
     }
 
     public void setFlagged(boolean flagged){
@@ -138,13 +129,17 @@ public class Cell extends View implements View.OnClickListener , View.OnLongClic
         invalidate();
     }
 
-    public boolean isFlagged(){
-        return flagged;
+    public void setMine(){
+        this.mine = true;
     }
 
-    int[] drawables = { R.drawable.num_0, R.drawable.num_1, R.drawable.num_2, R.drawable.num_3,
-            R.drawable.num_4, R.drawable.num_5, R.drawable.num_6, R.drawable.num_7, R.drawable.num_8 };
+    public void setRevealed() {
+        this.revealed = true;
+        invalidate();
+    }
 
+    private int[] drawables = { R.drawable.num_0, R.drawable.num_1, R.drawable.num_2, R.drawable.num_3,
+            R.drawable.num_4, R.drawable.num_5, R.drawable.num_6, R.drawable.num_7, R.drawable.num_8 };
     private int row;
     private int col;
     private int val; //number of bombs adjacent to this cell

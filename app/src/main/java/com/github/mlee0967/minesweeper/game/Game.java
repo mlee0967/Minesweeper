@@ -9,8 +9,6 @@ import com.github.mlee0967.minesweeper.game.views.Cell;
 
 import java.util.Random;
 
-
-
 public class Game {
     static public Game getInstance(){
         if(instance == null)
@@ -21,7 +19,7 @@ public class Game {
 
     private Game(){}
 
-    void initBoard(){
+    public void initBoard(){
         board = new Cell[height][width];
         for(int i=0; i<height; ++i) {
             board[i] = new Cell[width];
@@ -32,7 +30,7 @@ public class Game {
         }
     }
 
-    void initBoardSettings(Difficulty difficulty){
+    public void initBoardSettings(Difficulty difficulty){
         switch(difficulty){
             case BEGINNER:
                 width = 9;
@@ -51,23 +49,18 @@ public class Game {
         }
     }
 
-    public void initGame(Context context, TextView minesLeftView, Timer timer){
+    public void initGame(Context context, TextView minesLeftView){
         this.context = context;
         this.minesLeftView = minesLeftView;
-        this.timer = timer;
     }
 
-    public void startGame(Difficulty difficulty){
-        setDifficulty(difficulty);
+    public void startGame(Difficulty difficulty, Timer timer){
         initBoardSettings(difficulty);
         initBoard();
         setMinesLeft(mines);
         cellsLeft = width*height;
-        this.gameOver = false;
-    }
-
-    public void setDifficulty(Difficulty difficulty){
-        this.difficulty = difficulty;
+        gameOver = false;
+        this.timer = timer;
     }
 
     public void click(int row, int col){
@@ -76,10 +69,10 @@ public class Game {
 
         //if first click
         if(cellsLeft==width*height){
-            placeMines(row, col);
+            setMines(row, col);
         }
 
-        board[row][col].setClicked(true);
+        board[row][col].setClicked();
         board[row][col].setRevealed();
         if(board[row][col].isMine()){
             endGame(false);
@@ -101,7 +94,7 @@ public class Game {
             board[row][col].setFlagged(true);
             setMinesLeft(minesLeft-1);
             --cellsLeft;
-            if(cellsLeft==0)
+            if(cellsLeft==0 && minesLeft==0)
                 endGame(checkWin());
         }
     }
@@ -121,27 +114,22 @@ public class Game {
         }
     }
 
-    public boolean isGameOver(){
-        return gameOver;
-    }
-
     public Cell getCell(int position){
         int row = position / height;
         int col = position % height;
         return board[row][col];
     }
 
-    public int getWidth() {
-        return width;
-    }
-
     public int getHeight() {
         return height;
     }
 
-    private void setMinesLeft(int num){
-        minesLeft = num;
-        minesLeftView.setText(String.valueOf(minesLeft));
+    public int getWidth() {
+        return width;
+    }
+
+    public boolean isGameOver(){
+        return gameOver;
     }
 
     private boolean checkWin(){
@@ -170,7 +158,7 @@ public class Game {
         }
     }
 
-    private void placeMines(int clicked_row, int clicked_col){
+    private void setMines(int clicked_row, int clicked_col){
         Random rand = new Random();
         int unplaced_bombs = mines;
         while(unplaced_bombs>0){
@@ -190,6 +178,11 @@ public class Game {
         }
     }
 
+    private void setMinesLeft(int num){
+        minesLeft = num;
+        minesLeftView.setText(String.format("%03d", minesLeft));
+    }
+
     static private Game instance;
     private int width;
     private int height;
@@ -200,7 +193,6 @@ public class Game {
     private Cell[][] board;
     private int[][] dirs = {{0,1}, {0,-1}, {1,0}, {-1,0}, {1,1}, {-1,-1}, {1,-1}, {-1,1}};
     private boolean gameOver;
-    private Difficulty difficulty;
     private Context context;
     private Timer timer;
 }
