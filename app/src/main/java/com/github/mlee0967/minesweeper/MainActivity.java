@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.github.mlee0967.minesweeper.game.views.BoardAdapter;
 import com.github.mlee0967.minesweeper.game.views.Board;
 import com.github.mlee0967.minesweeper.game.Difficulty;
 import com.github.mlee0967.minesweeper.game.Game;
@@ -23,24 +22,23 @@ public class MainActivity extends AppCompatActivity {
         resetButton = (Button) findViewById(R.id.resetButton);
         resetButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                startGame();
+                startGame(Difficulty.EXPERT);
             }
         });
         timerView = (TextView) findViewById(R.id.Timer);
         boardView = (Board) findViewById(R.id.board);
 
         Game.getInstance().initGame(this, minesLeftView);
-        startGame();
+        startGame(Difficulty.BEGINNER);
     }
 
-    private void startGame(){
+    private void startGame(Difficulty difficulty){
         if(timer!=null)
             timer.cancel();
         timer = new Timer(timerView);
         timer.start();
-        Game.getInstance().startGame(Difficulty.BEGINNER, timer);
-        boardView.setNumColumns(Game.getInstance().getWidth());
-        boardView.setAdapter(new BoardAdapter());
+        Game.getInstance().startGame(difficulty, timer);
+        boardView.setup();
     }
 
     private TextView minesLeftView;

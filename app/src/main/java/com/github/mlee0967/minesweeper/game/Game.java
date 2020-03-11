@@ -31,6 +31,7 @@ public class Game {
     }
 
     public void initBoardSettings(Difficulty difficulty){
+        this.difficulty = difficulty;
         switch(difficulty){
             case BEGINNER:
                 width = 9;
@@ -44,7 +45,7 @@ public class Game {
                 break;
             case EXPERT:
                 width = 16;
-                height = 30;
+                height = 25;
                 mines = 99;
         }
     }
@@ -67,8 +68,8 @@ public class Game {
         if(board[row][col].isRevealed())
             return;
 
-        //if first click
-        if(cellsLeft==width*height){
+        //if first click (can happen after placing flag)
+        if(cellsLeft==width*height-(mines-minesLeft)){
             setMines(row, col);
         }
 
@@ -100,9 +101,13 @@ public class Game {
     }
 
     public Cell getCell(int position){
-        int row = position / height;
-        int col = position % height;
+        int row = position / width;
+        int col = position % width;
         return board[row][col];
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
     }
 
     public int getHeight() {
@@ -196,4 +201,5 @@ public class Game {
     private boolean gameOver;
     private Context context;
     private Timer timer;
+    private Difficulty difficulty;
 }
