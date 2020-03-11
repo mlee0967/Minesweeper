@@ -138,7 +138,7 @@ public class Cell extends View implements View.OnClickListener , View.OnLongClic
         drawable.draw(canvas);
     }
 
-    private int[] drawables = { R.drawable.num_0, R.drawable.num_1, R.drawable.num_2, R.drawable.num_3,
+    private static int[] drawables = { R.drawable.num_0, R.drawable.num_1, R.drawable.num_2, R.drawable.num_3,
             R.drawable.num_4, R.drawable.num_5, R.drawable.num_6, R.drawable.num_7, R.drawable.num_8 };
     private int row;
     private int col;

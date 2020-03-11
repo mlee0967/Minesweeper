@@ -34,7 +34,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startGame(){
-        Timer timer = new Timer(timerView);
+        if(timer!=null)
+            timer.cancel();
+        timer = new Timer(timerView);
         timer.start();
         Game.getInstance().startGame(Difficulty.BEGINNER, timer);
         boardView.setNumColumns(Game.getInstance().getWidth());
@@ -45,4 +47,5 @@ public class MainActivity extends AppCompatActivity {
     private TextView timerView;
     private Button resetButton;
     private Board boardView;
+    private Timer timer;
 }
