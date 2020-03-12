@@ -3,13 +3,11 @@ package com.github.mlee0967.minesweeper;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.mlee0967.minesweeper.game.views.Board;
 import com.github.mlee0967.minesweeper.game.Difficulty;
@@ -60,17 +58,17 @@ public class MainActivity extends AppCompatActivity {
         builder.setItems(listItems, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int idx) {
-                switch(idx){
-                    case 0:
-                        difficulty = Difficulty.BEGINNER;
-                        break;
-                    case 1:
-                        difficulty = Difficulty.INTERMEDIATE;
-                        break;
-                    case 2:
-                        difficulty = Difficulty.EXPERT;
-                }
-                startGame();
+            switch(idx){
+                case 0:
+                    difficulty = Difficulty.BEGINNER;
+                    break;
+                case 1:
+                    difficulty = Difficulty.INTERMEDIATE;
+                    break;
+                case 2:
+                    difficulty = Difficulty.EXPERT;
+            }
+            startGame();
             }
         });
 
