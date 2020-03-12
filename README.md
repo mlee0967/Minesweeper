@@ -1,9 +1,9 @@
 # Minesweeper
 Minesweeper for Android
 
-Click to reveal cells and long-click to place flags.
+Tap to reveal cells and long tap to place flags.
 
-Press the cogwheel icon to change difficulty.
+Tap the cogwheel icon to change difficulty.
 
 ![screenshot 1](./sc1.png)
 
