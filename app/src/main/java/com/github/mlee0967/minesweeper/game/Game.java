@@ -39,14 +39,14 @@ public class Game {
                 mines = 9;
                 break;
             case INTERMEDIATE:
-                width = 16;
-                height = 16;
-                mines = 40;
+                width = 12;
+                height = 12;
+                mines = 30;
                 break;
             case EXPERT:
-                width = 16;
-                height = 25;
-                mines = 99;
+                width = 12;
+                height = 18;
+                mines = 60;
         }
     }
 

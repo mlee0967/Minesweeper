@@ -22,7 +22,7 @@ public class Timer extends CountDownTimer {
     }
 
     private static final long INTERVAL_MS = 1000;
-    private static final long MAX_TIME = 999000;
+    private static final long MAX_TIME = 1000000;
     private final long duration;
     private TextView timerView;
 }
