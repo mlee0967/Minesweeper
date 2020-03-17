@@ -67,7 +67,7 @@ public class Game {
     }
 
     public void click(int row, int col){
-        if(board[row][col].isRevealed())
+        if(board[row][col].isRevealed() || board[row][col].isFlagged())
             return;
 
         //if first click (can happen after placing flag)
@@ -92,7 +92,6 @@ public class Game {
             board[row][col].setFlagged(false);
             setMinesLeft(minesLeft+1);
             ++cellsLeft;
-
         }else if(!board[row][col].isRevealed()){
             board[row][col].setFlagged(true);
             setMinesLeft(minesLeft-1);
