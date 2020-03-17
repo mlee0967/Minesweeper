@@ -11,9 +11,19 @@
         android:background="@color/colorPrimaryDark"
         android:gravity="center_horizontal">
 
+        <Button
+            android:id="@+id/recordButton"
+            android:layout_width="50px"
+            android:layout_height="50px"
+            android:layout_marginLeft="15px"
+            android:layout_gravity="center_vertical"
+            android:foreground="@drawable/trophy"
+            android:minWidth="0dp"
+            android:minHeight="0dp" />
+
         <TextView
             android:id="@+id/MinesLeft"
-            android:layout_marginLeft="145px"
+            android:layout_marginLeft="80px"
             android:layout_marginRight="70px"
             android:drawableLeft="@drawable/mine_small"
             android:text="000"

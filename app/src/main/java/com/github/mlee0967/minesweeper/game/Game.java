@@ -1,11 +1,13 @@
 package com.github.mlee0967.minesweeper.game;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mlee0967.minesweeper.utils.Timer;
 import com.github.mlee0967.minesweeper.game.views.Cell;
+import com.github.mlee0967.minesweeper.R;
 
 import java.util.Random;
 
@@ -41,12 +43,12 @@ public class Game {
             case INTERMEDIATE:
                 width = 12;
                 height = 12;
-                mines = 30;
+                mines = 22;
                 break;
             case EXPERT:
                 width = 12;
                 height = 18;
-                mines = 60;
+                mines = 45;
         }
     }
 
@@ -135,17 +137,33 @@ public class Game {
     private void endGame(boolean won){
         timer.cancel();
         gameOver = true;
-
-        if(won)
-            Toast.makeText(context,"Game Won", Toast.LENGTH_SHORT).show();
-        else
-            Toast.makeText(context,"Game lost", Toast.LENGTH_SHORT).show();
-
-        for(int r=0; r<height; ++r){
-            for(int c=0; c<width; ++c){
-                board[r][c].setRevealed();
+        if(won) {
+            Toast.makeText(context, "Game Won", Toast.LENGTH_SHORT).show();
+            if(updateBestTime())
+                Toast.makeText(context,
+                        "Congratulations!\nYou set a new record!",
+                        Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(context, "Game Over", Toast.LENGTH_SHORT).show();
+            for(int r=0; r<height; ++r){
+                for(int c=0; c<width; ++c){
+                    board[r][c].setRevealed();
+                }
             }
         }
+    }
+
+    private boolean updateBestTime(){
+        SharedPreferences prefs = context.getSharedPreferences(
+            context.getString(R.string.app_name), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        int bestTime = prefs.getInt(difficulty.toString(), -1);
+        if(bestTime==-1 || bestTime>timer.getTime()){
+            editor.putInt(difficulty.toString(), timer.getTime());
+            editor.commit();
+            return true;
+        }
+        return false;
     }
 
     private void reveal(int row, int col){

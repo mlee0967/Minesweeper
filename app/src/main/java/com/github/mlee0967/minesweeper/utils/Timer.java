@@ -12,8 +12,8 @@ public class Timer extends CountDownTimer {
 
     @Override
     public void onTick(long msUntilFinished) {
-        int second = (int) ((duration - msUntilFinished) / 1000);
-        timerView.setText(String.format("%03d", second));
+        time = (int) ((duration - msUntilFinished) / 1000);
+        timerView.setText(String.format("%03d", time));
     }
 
     @Override
@@ -21,9 +21,14 @@ public class Timer extends CountDownTimer {
         onTick(duration / 1000);
     }
 
+    public int getTime(){
+        return time;
+    }
+
     private static final long INTERVAL_MS = 1000;
     private static final long MAX_TIME = 1000000;
     private final long duration;
+    private int time;
     private TextView timerView;
 }
 
