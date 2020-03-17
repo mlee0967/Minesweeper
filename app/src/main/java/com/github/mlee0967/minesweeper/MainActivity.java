@@ -90,15 +90,17 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences(
                 getResources().getString(R.string.app_name), Context.MODE_PRIVATE);
         StringBuilder sb = new StringBuilder();
-        for (Difficulty difficulty : Difficulty.values()){
-            sb.append(difficulty.toString());
+        Difficulty[] difficulties = Difficulty.values();
+        for (int i=0; i<difficulties.length; ++i){
+            sb.append(difficulties[i].toString());
             sb.append(" : ");
-            int record = prefs.getInt(difficulty.toString(), -1);
+            int record = prefs.getInt(difficulties[i].toString(), -1);
             if(record==-1)
                 sb.append("---");
             else
                 sb.append(record);
-            sb.append("\n\n");
+            if(i != difficulties.length-1)
+                sb.append("\n\n");
         }
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
